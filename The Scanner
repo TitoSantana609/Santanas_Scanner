@@ -20,6 +20,8 @@ def amass_scan():
                     response = requests.get(f"http://{domain}", timeout=5)
                     if response.status_code < 400:
                         alive_domains.append(domain)
+                    else:
+                        unreachable_domains.append(domain)
                 except requests.RequestException:
                     unreachable_domains.append(domain)
 
@@ -41,9 +43,9 @@ def amass_scan():
         output_text.config(state='disabled')
 
 root = tk.Tk()
-root.title("Santana's Scanner")
+root.title("Amass Domain Scanner")
 
-# Entry field for entering the domain
+# Label for entering the domain
 domain_label = tk.Label(root, text="Enter Domain:")
 domain_label.pack()
 domain_entry = tk.Entry(root)
@@ -53,10 +55,18 @@ domain_entry.pack()
 scan_button = tk.Button(root, text="Scan Domain", command=amass_scan)
 scan_button.pack()
 
+# Label for unreachable domains
+output_label = tk.Label(root, text="Unreachable Domains:")
+output_label.pack()
+
 # Text widget to display unreachable domains
 output_text = tk.Text(root, height=10, width=40)
 output_text.config(state='disabled')  # Initially, text widget is not editable
 output_text.pack()
+
+# Label for alive domains
+alive_label = tk.Label(root, text="Alive Domains:")
+alive_label.pack()
 
 # Text widget to display alive domains
 alive_text = tk.Text(root, height=10, width=40)
